@@ -24,6 +24,6 @@ void setup() {
 void loop() {
 
   LP.sleep(1000);
-  Serial.printf("time: %d\n", LP.millis() );
+  Serial.printf("time: %ld\n", LP.millis() );
   Serial.flush();
 }
