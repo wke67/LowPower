@@ -50,10 +50,7 @@ jobs:
             # Install DxCore via Boards Manager for the toolchain
             - source-url: http://drazzy.com/package_drazzy.com_index.json
               name: ${{ env.platform-name }}
-          libraries: |
-            # The sketches don't have any external library dependencies, so just define an empty array
-            - https://github.com/wke67/LowPower.git
-
+          libraries: https://github.com/wke67/LowPower.git
           verbose: false
           enable-deltas-report: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
