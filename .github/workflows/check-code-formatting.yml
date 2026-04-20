@@ -39,6 +39,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: test
+        run: |
+          pwd
+          ls -la
+          ls .github
+
       - name: Check code formatting
         uses: wke67/artistic-style-action@main
         with:
