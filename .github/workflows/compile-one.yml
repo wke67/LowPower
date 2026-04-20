@@ -40,15 +40,10 @@ jobs:
           cli-version: 0.33.0
           fqbn: ${{ env.platform-name }}:${{ matrix.part }},clock=24internal,millis=${{ matrix.millis }},wiremode=mands,flmap=lockdefault
           sketch-paths: |
-            # It's necessary to jump through some hoops to dynamically generate the env object keys to define the non-universal sketch paths
-            # https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions#format
-            ${{ env.avr-da-series-sketch-paths }}
+            ${{ env.all-parts-sketch-paths }}
           platforms: |
             # Install DxCore via Boards Manager for the toolchain
             - source-url: http://drazzy.com/package_drazzy.com_index.json
-              name: ${{ env.platform-name }}
-            # Overwrite the DxCore release version with the platform from the local path
-            - source-path: megaavr
               name: ${{ env.platform-name }}
           libraries: |
             # The sketches don't have any external library dependencies, so just define an empty array

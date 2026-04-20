@@ -9,7 +9,7 @@ on:
   # repository_dispatch:
 
 env:
-  OPTIONS_FILE_PATH: megaavr/extras/ci/arduino-code-style.conf
+  OPTIONS_FILE_PATH: .github/style
   NAME_PATTERNS: |
     - '*.ino'
     - '*.h'

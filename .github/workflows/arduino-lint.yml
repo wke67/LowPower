@@ -19,5 +19,5 @@ jobs:
       - name: Arduino Lint
         uses: arduino/arduino-lint-action@v2
         with:
-          path: megaavr
+          path: ./
           token: ${{ secrets.GITHUB_TOKEN }}
