@@ -21,7 +21,12 @@ correct to the ms.
 #include <avr/sleep.h>
 #include <pins_arduino.h>
 
+#ifndef CLKCTRL_LPMODE_bm
+  #define CLKCTRL_LPMODE_bm 0
+#endif
+
 #define RTC_MAX 0xffff
+
 
 char __rtc_intflags __attribute__((weak)) = 33;
 
@@ -44,12 +49,15 @@ LowPowerClass::LowPowerClass(uint8_t mode) {
 
   RTC_CTRLA = RTC_RUNSTDBY_bm | RTC_PRESCALER_DIV32_gc | RTC_RTCEN_bm;
   switch (mode) {
+
+    #ifdef LOWPOWER_XTAL
     case LOWPOWER_XTAL:
       // set up RTC with 32kHz crystal running at 1024 Hz
       _PROTECTED_WRITE(CLKCTRL_XOSC32KCTRLA, (CLKCTRL_RUNSTDBY_bm | CLKCTRL_ENABLE_bm | CLKCTRL_CSUT_16K_gc | CLKCTRL_LPMODE_bm)) ;
       RTC_CLKSEL = RTC_CLKSEL_XTAL32K_gc; // RTC_CLKSEL_XOSC32K_gc == 2
       _status = timeout(CLKCTRL_XOSC32KS_bm);
       break;
+      #endif
 
     case LOWPOWER_EXT:
       RTC_CLKSEL = RTC_CLKSEL_EXTCLK_gc;
