@@ -52,7 +52,8 @@ jobs:
               name: ${{ env.platform-name }}
           libraries: |
             # The sketches don't have any external library dependencies, so just define an empty array
-            -
+            - .
+
           verbose: false
           enable-deltas-report: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
