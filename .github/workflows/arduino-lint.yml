@@ -1,0 +1,23 @@
+name: Arduino Lint
+
+# See: https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows
+on:
+  push:
+  #pull_request:
+  #workflow_dispatch:
+  repository_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      # See: https://github.com/arduino/arduino-lint-action#readme
+      - name: Arduino Lint
+        uses: arduino/arduino-lint-action@v2
+        with:
+          path: megaavr
+          token: ${{ secrets.GITHUB_TOKEN }}

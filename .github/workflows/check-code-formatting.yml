@@ -1,0 +1,50 @@
+name: Check code formatting
+
+on:
+  # workflow_dispatch event allows the workflow to be triggered manually
+  # See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+  workflow_dispatch:
+  # repository_dispatch event allows the workflow to be triggered via the GitHub API
+  # See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch
+  # repository_dispatch:
+
+env:
+  OPTIONS_FILE_PATH: megaavr/extras/ci/arduino-code-style.conf
+  NAME_PATTERNS: |
+    - '*.ino'
+    - '*.h'
+    - '*.hpp'
+    - '*.hh'
+    - '*.hxx'
+    - '*.h++'
+    - '*.cpp'
+    - '*.cc'
+    - '*.cxx'
+    - '*.c++'
+    - '*.cp'
+    - '*.c'
+    - '*.ipp'
+    - '*.ii'
+    - '*.ixx'
+    - '*.inl'
+    - '*.tpp'
+    - '*.txx'
+    - '*.tpl'
+
+jobs:
+  all:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check code formatting
+        uses: wke67/artistic-style-action@main
+        with:
+          options-file-path: ${{ env.OPTIONS_FILE_PATH }}
+          name-patterns: |
+            ${{ env.NAME_PATTERNS }}
+          target-paths: |
+            - src
+            - examples
