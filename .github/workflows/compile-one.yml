@@ -16,7 +16,7 @@ jobs:
       platform-name: DxCore:megaavr
 
       all-parts-sketch-paths: |
-        - LowPower/examples/LowPower
+        - examples/LowPower
 
     strategy:
       fail-fast: false
@@ -37,7 +37,6 @@ jobs:
         run: |
           pwd
           ls -l
-          ls LowPower
 
       - name: Compile examples (rated max speed, nothing weird)
         uses: arduino/compile-sketches@main
