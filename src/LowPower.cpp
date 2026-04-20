@@ -84,7 +84,7 @@ LowPowerClass::LowPowerClass(uint8_t mode) {
 
 uint8_t LowPowerClass::timeout(uint8_t clk) {
 
-  for(int i = 0; i < 1000; i++) {
+  for (int i = 0; i < 1000; i++) {
     if (CLKCTRL.MCLKSTATUS & clk) {
       return clk;
     }
