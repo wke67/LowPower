@@ -9,7 +9,7 @@ on:
   # repository_dispatch:
 
 env:
-  OPTIONS_FILE_PATH: ${{ github.workspace }}/.github/style
+  OPTIONS_FILE_PATH: .github/style
   NAME_PATTERNS: |
     - '*.ino'
     - '*.h'
