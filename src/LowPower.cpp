@@ -22,7 +22,7 @@ correct to the ms.
 
 #define RTC_MAX 0xffff
 
-char __rtc_intflags __attribute__ ((weak)) = 33;
+char __rtc_intflags __attribute__((weak)) = 33;
 
 #ifndef MILLIS_USE_TIMERRTC
 
@@ -42,23 +42,22 @@ ISR(RTC_CNT_vect) {
 LowPowerClass::LowPowerClass(uint8_t mode) {
 
   RTC_CTRLA = RTC_RUNSTDBY_bm | RTC_PRESCALER_DIV32_gc | RTC_RTCEN_bm;
-  switch(mode) {
+  switch (mode) {
     case LOWPOWER_XTAL:
       // set up RTC with 32kHz crystal running at 1024 Hz
       _PROTECTED_WRITE(CLKCTRL_XOSC32KCTRLA, (CLKCTRL_RUNSTDBY_bm | CLKCTRL_ENABLE_bm | CLKCTRL_CSUT_16K_gc | CLKCTRL_LPMODE_bm)) ;
       RTC_CLKSEL = RTC_CLKSEL_XTAL32K_gc; // RTC_CLKSEL_XOSC32K_gc == 2
-      _status=timeout(CLKCTRL_XOSC32KS_bm);
-      //while (!(CLKCTRL.MCLKSTATUS & CLKCTRL_XOSC32KS_bm)) ;
+      _status = timeout(CLKCTRL_XOSC32KS_bm);
       break;
 
     case LOWPOWER_EXT:
       RTC_CLKSEL = RTC_CLKSEL_EXTCLK_gc;
-      _status=timeout(CLKCTRL_EXTS_bm);
+      _status = timeout(CLKCTRL_EXTS_bm);
       break;
 
     case LOWPOWER_INT:
       RTC_CLKSEL = RTC_CLKSEL_OSC32K_gc;
-      _status=timeout(CLKCTRL_OSC32KS_bm);
+      _status = timeout(CLKCTRL_OSC32KS_bm);
       break;
 
     default:
@@ -66,7 +65,7 @@ LowPowerClass::LowPowerClass(uint8_t mode) {
       break;
   }
 
-  if (_status == 0 ) return;
+  if (_status == 0) return;
 
   // set up RTC period
   while (RTC.STATUS && RTC_PERBUSY_bm);

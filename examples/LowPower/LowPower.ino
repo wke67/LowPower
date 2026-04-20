@@ -9,21 +9,19 @@
 LowPowerClass LP(LPCLOCK);
 
 void setup() {
-
   Serial.begin(115200);
-  if ( LP.status() != LPCLOCK )
+  if (LP.status() != LPCLOCK)
     Serial.printf("something went wrong: clock status %2.2x != %2.2x\n", LP.status(), LPCLOCK);
 
   Serial.printf("start: clock status %2.2x\n", LP.status());
-  while( LP.millis() < 3 ) ;    // wait for Clock startup
+  while(LP.millis() < 3) ;    // wait for Clock startup
   LP.set_millis(100);
   LP.restart_millis();
   Serial.flush(); // flush Serial before sleep()
 }
 
 void loop() {
-
   LP.sleep(1000);
-  Serial.printf("time: %ld\n", LP.millis() );
+  Serial.printf("time: %ld\n", LP.millis());
   Serial.flush();
 }
