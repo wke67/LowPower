@@ -16,7 +16,9 @@ void setup() {
   Serial.printf("start: clock status %2.2x\n", LP.status());
   while (LP.millis() < 3) ;    // wait for Clock startup
   LP.set_millis(100);
+  Serial.printf("time: %ld\n", LP.millis());
   LP.restart_millis();
+  Serial.printf("time: %ld\n", LP.millis());
   Serial.flush(); // flush Serial before sleep()
 }
 
