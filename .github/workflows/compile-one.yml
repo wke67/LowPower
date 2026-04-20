@@ -43,7 +43,7 @@ jobs:
         uses: arduino/compile-sketches@main
         with:
           cli-version: 0.33.0
-          fqbn: ${{ env.platform-name }}:${{ matrix.part }},clock=24internal,${{ matrix.millis }},wiremode=mands,flmap=lockdefault
+          fqbn: ${{ env.platform-name }}:${{ matrix.part }},clock=24internal,${{ matrix.millis }}wiremode=mands,flmap=lockdefault
           sketch-paths: |
             ${{ env.all-parts-sketch-paths }}
           platforms: |
