@@ -36,7 +36,7 @@ jobs:
         run: |
           pwd
           ls -l
-          echo {{ github.workspace }}
+          echo ${{ github.workspace }}
           echo $HOME
 
       - name: Compile examples (rated max speed, nothing weird)
@@ -52,7 +52,7 @@ jobs:
               name: ${{ env.platform-name }}
           libraries: |
             # The sketches don't have any external library dependencies, so just define an empty array
-            - .
+            - $HOME/LowPower/LowPower
 
           verbose: false
           enable-deltas-report: false
