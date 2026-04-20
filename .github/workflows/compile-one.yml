@@ -52,7 +52,7 @@ jobs:
               name: ${{ env.platform-name }}
           libraries: |
             # The sketches don't have any external library dependencies, so just define an empty array
-            - ${{ github.workspace }}
+            - https://github.com/wke67/LowPower.git
 
           verbose: false
           enable-deltas-report: false
