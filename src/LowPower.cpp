@@ -13,6 +13,7 @@ If the RTC Timer is not used, the RTC XTAL oscillator is
 initialized and the RTC interrput is handeled here.
 The millis() function is updated but returned time is not
 correct to the ms.
+
 */
 
 #include <Arduino.h>
