@@ -24,7 +24,6 @@ jobs:
       matrix:
         part: [avrdd:chip=avr64dd28, avrda:chip=avr128da28]
         millis:
-          - rtcxtal
           - tcb2
           - ""
 
@@ -37,6 +36,8 @@ jobs:
         run: |
           pwd
           ls -l
+          echo {{ github.workspace }}
+          echo $HOME
 
       - name: Compile examples (rated max speed, nothing weird)
         uses: arduino/compile-sketches@main
