@@ -12,7 +12,9 @@ class LowPowerClass {
 
   public:
     LowPowerClass(uint8_t mode = LOWPOWER_EXT);
-    uint8_t status() { return _status; }
+    uint8_t status() {
+      return _status;
+    }
     void sleep(unsigned long time);
     unsigned long millis();
     void set_millis(uint32_t newmillis);

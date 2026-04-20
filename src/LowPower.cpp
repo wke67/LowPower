@@ -65,8 +65,9 @@ LowPowerClass::LowPowerClass(uint8_t mode) {
       break;
   }
 
-  if (_status == 0) return;
-
+  if (_status == 0) {
+    return;
+  }
   // set up RTC period
   while (RTC.STATUS && RTC_PERBUSY_bm);
   RTC.PER = RTC_MAX;
@@ -83,7 +84,9 @@ LowPowerClass::LowPowerClass(uint8_t mode) {
 uint8_t LowPowerClass::timeout(uint8_t clk) {
 
   for(int i = 0; i < 1000; i++) {
-    if (CLKCTRL.MCLKSTATUS & clk) return clk;
+    if (CLKCTRL.MCLKSTATUS & clk) {
+      return clk;
+    }
     delayMicroseconds(1000);
   }
   return 0;
@@ -135,9 +138,15 @@ void LowPowerClass::restart_millis() {
 #else
 
 LowPowerClass::LowPowerClass(uint8_t mode) {}
-unsigned long LowPowerClass::millis() { return ::millis(); }
-void LowPowerClass::set_millis(uint32_t newmillis) { ::set_millis(newmillis); }
-void LowPowerClass::restart_millis() { ::restart_millis(); };
+unsigned long LowPowerClass::millis() {
+  return ::millis();
+}
+void LowPowerClass::set_millis(uint32_t newmillis) {
+  ::set_millis(newmillis);
+}
+void LowPowerClass::restart_millis() {
+  ::restart_millis();
+};
 
 #endif
 
