@@ -9,7 +9,7 @@ on:
   # repository_dispatch:
 
 env:
-  OPTIONS_FILE_PATH: .github/style
+  OPTIONS_FILE_PATH: .github/arduino-code-style.conf
   NAME_PATTERNS: |
     - '*.ino'
     - '*.h'
