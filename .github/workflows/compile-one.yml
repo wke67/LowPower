@@ -16,7 +16,7 @@ jobs:
       platform-name: DxCore:megaavr
 
       all-parts-sketch-paths: |
-        - src/examples/LowPower
+        - LowPower/examples/LowPower
 
     strategy:
       fail-fast: false
@@ -33,6 +33,11 @@ jobs:
         uses: actions/checkout@v6
 
       # See: https://github.com/arduino/compile-sketches/README.md
+      - name: test
+        run: |
+          pwd
+          ls -l
+          ls LowPower
 
       - name: Compile examples (rated max speed, nothing weird)
         uses: arduino/compile-sketches@main

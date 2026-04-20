@@ -19,4 +19,5 @@ jobs:
       - name: Arduino Lint
         uses: arduino/arduino-lint-action@v2
         with:
+          path: LowPower
           token: ${{ secrets.GITHUB_TOKEN }}
