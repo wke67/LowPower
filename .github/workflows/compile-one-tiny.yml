@@ -123,6 +123,14 @@ jobs:
             available-flash-kB: 1.5
 
     steps:
+      - name: test
+        run: |
+          echo bootloader-series ${{ matrix.bootloader-series }}
+          echo flash-class ${{ matrix.flash-class }}
+          echo IO-class ${{ matrix.IO-class }}
+          echo bootloader-code ${{ matrix.bootloader-code }}
+          echo chip ${{ matrix.flash-class }}${{ matrix.peripheral-class }}${{ matrix.IO-class }}
+
       - name: Checkout repository
         uses: actions/checkout@v6
 
