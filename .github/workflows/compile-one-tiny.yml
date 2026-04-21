@@ -150,6 +150,7 @@ jobs:
           sketches-report-path: sketches-reports
 
       - name: Compile examples (all millis=rtcxtal)
+        if: ${{ matrix.peripheral-class }} != 0
         uses: arduino/compile-sketches@main
         with:
           cli-version: 0.33.0
