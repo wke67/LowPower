@@ -50,8 +50,8 @@ jobs:
         # Filter out these matrix combinations
         exclude:
           # printf!
-          #- flash-class: 2
-          #- flash-class: 4
+          - flash-class: 2
+          - flash-class: 4
 
           - flash-class: 32
             peripheral-class: 0
@@ -107,20 +107,21 @@ jobs:
           - flash-class: 8
             bootloader-code: o
             available-flash-kB: 7.5
-          - flash-class: 4
-            bootloader-code:
-            available-flash-kB: 4
-            bootloader-series: y
-          - flash-class: 4
-            bootloader-code: o
-            available-flash-kB: 3.5
-          - flash-class: 2
-            bootloader-code:
-            available-flash-kB: 2
-            bootloader-series: y
-          - flash-class: 2
-            bootloader-code: o
-            available-flash-kB: 1.5
+    # excluded before !!
+    #          - flash-class: 4
+    #            bootloader-code:
+    #            available-flash-kB: 4
+    #            bootloader-series: y
+    #          - flash-class: 4
+    #            bootloader-code: o
+    #            available-flash-kB: 3.5
+    #          - flash-class: 2
+    #            bootloader-code:
+    #            available-flash-kB: 2
+    #            bootloader-series: y
+    #          - flash-class: 2
+    #            bootloader-code: o
+    #            available-flash-kB: 1.5
 
     steps:
       - name: test
