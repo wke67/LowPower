@@ -172,6 +172,8 @@ jobs:
           sketches-report-path: sketches-reports
 
       - name: Compile examples (all millis=rtcxosc)
+        # exclude ---> seems to be too restictive? #error "Only the tinyAVR 1-series and 2-series parts with at least 14 pins support external RTC timebase"
+        if: matrix.peripheral-class != 0
         uses: arduino/compile-sketches@main
         with:
           cli-version: 0.33.0
