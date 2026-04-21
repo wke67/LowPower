@@ -1,7 +1,6 @@
 # Low Power Sleep for AVR DxCore
 
-Low power timed-sleep() for Microchip AVR (megaavr) running on Arduino DxCore platform.
-Supports MegaAVR and MegaTinyAVR e.g. avr32dd64, attiny1604 chips which include the RTC module.
+Low power timed-sleep() for Microchip AVR chips which include the RTC module and run on Arduino DxCore, e.g. avr64dd32 or MegaTinyCore e.g. ATtiny1604.
 
 The RTC module can run with internal, external or on-chip 32kHz Crystal oscillator clocks.
 The chip can be powered down to 'Standby' consuming ~1uA. In this mode, almost all 
@@ -18,7 +17,7 @@ in the class instanciation.
 
 The library provides:
 - `LowPower.h`
-- `LowPowerClass(clock_source)` e.g. LOWPOWER_XTAL
+- `LowPowerClass(clock_source=LOWPOWER_INT)` others: LOWPOWER_XTAL, LOWPOWER_EXT
 - `LowPowerClass::status()` returns clock_source, zero on error
 - `void LowPowerClass::sleep(unsigned long time)`
 - `unsigned long LowPowerClass::millis()`
