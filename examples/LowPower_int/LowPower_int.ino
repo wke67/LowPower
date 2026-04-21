@@ -6,7 +6,7 @@
 #include <LowPower.h>
 
 #define  LPCLOCK LOWPOWER_INT
-LowPowerClass LP;
+LowPowerClass LP(LPCLOCK);
 
 void setup() {
   Serial.begin(115200);
