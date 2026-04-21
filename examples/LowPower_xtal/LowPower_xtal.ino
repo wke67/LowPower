@@ -5,6 +5,8 @@
 
 #include <LowPower.h>
 
+#ifdef LOWPOWER_XTAL
+
 #define  LPCLOCK LOWPOWER_XTAL
 LowPowerClass LP(LPCLOCK);
 
@@ -27,3 +29,8 @@ void loop() {
   Serial.printf("time: %ld\n", LP.millis());
   Serial.flush();
 }
+#else
+  #warning "xtal not available"
+  void setup() {};
+  void loop() {};
+#endif
