@@ -13,7 +13,7 @@ In this case, the code relies on the RTC interrupt routine in DxCore/../cores/..
 needs to store the interrupt flags to __rtc_intflags. (DxCore update required!)
 
 If the RTC Timer is not used by the DxCore platforem, the RTC clock source can be selected
-in the class instanciation.
+in the class instantiation.
 
 The library provides:
 - `LowPower.h`
