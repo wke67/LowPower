@@ -65,7 +65,7 @@ jobs:
             IO-class: 2
           #- flash-class: 4
           #  peripheral-class: 0
-            IO-class: 7
+          #  IO-class: 7
           - flash-class: 2
             IO-class: 7
           - flash-class: 2
