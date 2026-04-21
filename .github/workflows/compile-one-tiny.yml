@@ -1,0 +1,192 @@
+name: Compile Examples Tiny
+
+on:
+  # workflow_dispatch event allows the workflow to be triggered manually
+  # See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+  workflow_dispatch:
+  # repository_dispatch event allows the workflow to be triggered via the GitHub API
+  # See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch
+  repository_dispatch:
+
+jobs:
+  compile-examples:
+    runs-on: ubuntu-latest
+
+    env:
+      platform-name: megaTinyCore:megaavr
+
+      all-parts-sketch-paths: |
+        - examples/LowPower
+        - examples/LowPower_xtal
+        - examples/LowPower_int
+        - examples/LowPower_ext
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        flash-class:
+          - 32
+          - 16
+          - 8
+          - 4
+          - 2
+        peripheral-class:
+          - 2
+          - 1
+          - 0
+        IO-class:
+          - 7
+          - 6
+          - 4
+          - 2
+        bootloader-series:
+          - y
+          - 2
+        bootloader-code:
+          -
+          - o
+
+        # Filter out these matrix combinations
+        exclude:
+          # printf!
+          - flash-class: 2
+          - flash-class: 4
+
+          - flash-class: 32
+            peripheral-class: 0
+          - flash-class: 32
+            IO-class: 4
+          - flash-class: 32
+            IO-class: 2
+          - flash-class: 16
+            IO-class: 2
+          - flash-class: 8
+            IO-class: 2
+          - flash-class: 4
+            peripheral-class: 0
+            IO-class: 7
+          - flash-class: 2
+            IO-class: 7
+          - flash-class: 2
+            IO-class: 6
+          - flash-class: 2
+            peripheral-class: 2
+          - IO-class: 2
+            peripheral-class: 2
+          - peripheral-class: 2
+            bootloader-code: o
+            bootloader-series: y
+          - peripheral-class: 2
+            bootloader-code:
+            bootloader-series: 2
+          - peripheral-class: 1
+            bootloader-series: 2
+          - peripheral-class: 0
+            bootloader-series: 2
+
+        include:
+          - flash-class: 32
+            bootloader-code:
+            available-flash-kB: 32
+            bootloader-series: y
+          - flash-class: 32
+            bootloader-code: o
+            available-flash-kB: 31.5
+          - flash-class: 16
+            bootloader-code:
+            available-flash-kB: 16
+            bootloader-series: y
+          - flash-class: 16
+            bootloader-code: o
+            available-flash-kB: 15.5
+          - flash-class: 8
+            bootloader-code:
+            available-flash-kB: 8
+            bootloader-series: y
+          - flash-class: 8
+            bootloader-code: o
+            available-flash-kB: 7.5
+          - flash-class: 4
+            bootloader-code:
+            available-flash-kB: 4
+            bootloader-series: y
+          - flash-class: 4
+            bootloader-code: o
+            available-flash-kB: 3.5
+          - flash-class: 2
+            bootloader-code:
+            available-flash-kB: 2
+            bootloader-series: y
+          - flash-class: 2
+            bootloader-code: o
+            available-flash-kB: 1.5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      # See: https://github.com/arduino/compile-sketches/README.md
+
+      - name: Compile examples (all millis=default)
+        uses: arduino/compile-sketches@main
+        with:
+          cli-version: 0.33.0
+          fqbn: ${{ env.platform-name }}:atx${{ matrix.bootloader-series}}${{ matrix.IO-class }}${{ matrix.bootloader-code }}:chip=${{ matrix.flash-class }}${{ matrix.peripheral-class }}${{ matrix.IO-class }},clock${{ matrix.bootloader-code }}=20internal,wiremode=mors,attach=allenabled,PWMmux=default
+          sketch-paths: |
+            ${{ env.all-parts-sketch-paths }}
+          platforms: |
+            # Install megaTinyCore via Boards Manager for the toolchain
+            - source-url: http://drazzy.com/package_drazzy.com_index.json
+              name: ${{ env.platform-name }}
+          libraries: |
+            - source-url: https://github.com/wke67/LowPower.git
+              name: LowPower
+
+          verbose: false
+          enable-deltas-report: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          enable-warnings-report: true
+          sketches-report-path: sketches-reports
+
+      - name: Compile examples (all millis=rtcxtal)
+        uses: arduino/compile-sketches@main
+        with:
+          cli-version: 0.33.0
+          fqbn: ${{ env.platform-name }}:atx${{ matrix.bootloader-series}}${{ matrix.IO-class }}${{ matrix.bootloader-code }}:chip=${{ matrix.flash-class }}${{ matrix.peripheral-class }}${{ matrix.IO-class }},clock${{ matrix.bootloader-code }}=20internal,millis=rtcxtal,wiremode=mors,attach=allenabled,PWMmux=default
+          sketch-paths: |
+            ${{ env.all-parts-sketch-paths }}
+          platforms: |
+            # Install megaTinyCore via Boards Manager for the toolchain
+            - source-url: http://drazzy.com/package_drazzy.com_index.json
+              name: ${{ env.platform-name }}
+          libraries: |
+            - source-url: https://github.com/wke67/LowPower.git
+              name: LowPower
+
+          verbose: false
+          enable-deltas-report: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          enable-warnings-report: true
+          sketches-report-path: sketches-reports
+
+      - name: Compile examples (all millis=rtcxosc)
+        uses: arduino/compile-sketches@main
+        with:
+          cli-version: 0.33.0
+          fqbn: ${{ env.platform-name }}:atx${{ matrix.bootloader-series}}${{ matrix.IO-class }}${{ matrix.bootloader-code }}:chip=${{ matrix.flash-class }}${{ matrix.peripheral-class }}${{ matrix.IO-class }},clock${{ matrix.bootloader-code }}=20internal,millis=rtcxosc,wiremode=mors,attach=allenabled,PWMmux=default
+          sketch-paths: |
+            ${{ env.all-parts-sketch-paths }}
+          platforms: |
+            # Install megaTinyCore via Boards Manager for the toolchain
+            - source-url: http://drazzy.com/package_drazzy.com_index.json
+              name: ${{ env.platform-name }}
+          libraries: |
+            - source-url: https://github.com/wke67/LowPower.git
+              name: LowPower
+
+          verbose: false
+          enable-deltas-report: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          enable-warnings-report: true
+          sketches-report-path: sketches-reports
