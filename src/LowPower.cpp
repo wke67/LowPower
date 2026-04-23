@@ -10,7 +10,7 @@ in DxCore/../cores/.../wiring.c which needs to store the
 interrupt flags to __rtc_intflags.
 
 If the RTC Timer is not used, the RTC XTAL oscillator is
-initialized and the RTC interrput is handeled here.
+initialized and the RTC interrupt is handled here.
 The millis() function is updated but returned time is not
 correct to the ms.
 
@@ -47,34 +47,37 @@ ISR(RTC_CNT_vect) {
 
 LowPowerClass::LowPowerClass(uint8_t mode) {
 
-  RTC_CTRLA = RTC_RUNSTDBY_bm | RTC_PRESCALER_DIV32_gc | RTC_RTCEN_bm;
-  switch (mode) {
+  uint8_t status=0;
 
-    #ifdef LOWPOWER_XTAL
+  _mode = mode;
+  RTC_CTRLA = RTC_RUNSTDBY_bm | RTC_PRESCALER_DIV32_gc | RTC_RTCEN_bm;
+  switch (_mode) {
+
     case LOWPOWER_XTAL:
+      #ifdef LOWPOWER_XTAL
       // set up RTC with 32kHz crystal running at 1024 Hz
       _PROTECTED_WRITE(CLKCTRL_XOSC32KCTRLA, (CLKCTRL_RUNSTDBY_bm | CLKCTRL_ENABLE_bm | CLKCTRL_CSUT_16K_gc | CLKCTRL_LPMODE_bm)) ;
       RTC_CLKSEL = RTC_CLKSEL_XTAL32K_gc; // RTC_CLKSEL_XOSC32K_gc == 2
-      _status = timeout(CLKCTRL_XOSC32KS_bm);
-      break;
+      status = timeout(CLKCTRL_XOSC32KS_bm);
       #endif
+      break;
 
     case LOWPOWER_EXT:
       RTC_CLKSEL = RTC_CLKSEL_EXTCLK_gc;
-      _status = timeout(CLKCTRL_EXTS_bm);
+      status = timeout(CLKCTRL_EXTS_bm);
       break;
 
     case LOWPOWER_INT:
       RTC_CLKSEL = RTC_CLKSEL_OSC32K_gc;
-      _status = timeout(CLKCTRL_OSC32KS_bm);
+      status = timeout(CLKCTRL_OSC32KS_bm);
       break;
 
     default:
-      _status = 0;
+      status = 0;
       break;
   }
 
-  if (_status == 0) {
+  if (status == 0) {
     return;
   }
   // set up RTC period
@@ -84,17 +87,17 @@ LowPowerClass::LowPowerClass(uint8_t mode) {
   RTC.CNT = 0;
   timer_overflow_count = 0;
 
-  // RTC Interrup enable
+  // RTC Interrupt enable
   RTC_INTCTRL = RTC_OVF_bm;
 
 }
 
 
-uint8_t LowPowerClass::timeout(uint8_t clk) {
+uint8_t LowPowerClass::timeout(uint8_t mode) {
 
-  for (int i = 0; i < 1000; i++) {
-    if (CLKCTRL.MCLKSTATUS & clk) {
-      return clk;
+  for (int i = 0; i < 2000; i++) {
+    if (CLKCTRL.MCLKSTATUS & mode) {
+      return mode;
     }
     delayMicroseconds(1000);
   }
@@ -137,7 +140,7 @@ void LowPowerClass::set_millis(uint32_t newmillis) {
   timer_overflow_count = newmillis >> 16;
   while (RTC.STATUS & RTC_CNTBUSY_bm); // wait if RTC busy
   RTC.CNT = newmillis & 0xFFFF;
-  SREG = oldSREG; // reenable interrupts if we killed them,
+  SREG = oldSREG; // re-enable interrupts if we killed them,
 }
 
 void LowPowerClass::restart_millis() {
@@ -146,7 +149,16 @@ void LowPowerClass::restart_millis() {
 
 #else
 
-LowPowerClass::LowPowerClass(uint8_t mode) {}
+LowPowerClass::LowPowerClass(uint8_t mode) {
+  #if defined(MILLIS_USE_TIMERRTC_XTAL)
+  _mode = LOWPOWER_XTAL;
+  #elif defined(MILLIS_USE_TIMERRTC_OSC)
+  _mode = LOWPOWER_INT;
+  #else
+  _mode= LOWPOWER_EXT;
+  #endif
+}
+
 unsigned long LowPowerClass::millis() {
   return ::millis();
 }
@@ -159,6 +171,9 @@ void LowPowerClass::restart_millis() {
 
 #endif
 
+uint8_t LowPowerClass::status() {
+  return CLKCTRL.MCLKSTATUS & _mode;
+}
 
 void LowPowerClass::sleep(unsigned long dly) {
   volatile unsigned int cntr, cnt;
