@@ -18,7 +18,7 @@ in the class instantiation.
 The library provides:
 - `LowPower.h`
 - `LowPowerClass(clock_source=LOWPOWER_INT)` others: LOWPOWER_XTAL, LOWPOWER_EXT
-- `LowPowerClass::status()` returns clock_source, zero on error
+- `LowPowerClass::status()` returns clock_source status bit
 - `void LowPowerClass::sleep(unsigned long time)`
 - `unsigned long LowPowerClass::millis()`
 - `void LowPowerClass::set_millis(uint32_t newmillis)`
